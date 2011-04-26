@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='django-photologue-extra-extra-tags',
-    version=__import__('photologue_extra_tags').__version__,
+    name='django-photologue-addons',
+    version=__import__('photologue_addons').__version__,
     license="BSD",
 
     install_requires = ['django-photologue',],
@@ -13,12 +13,12 @@ setup(
     author='Colin Powell',
     author_email='colin@onecardinal.com',
 
-    url='http://github.com/powellc/django-photologue-extra-tags',
-    download_url='http://github.com/powellc/django-photologue-extra-tags/downloads',
+    url='http://github.com/powellc/django-photologue-addons',
+    download_url='http://github.com/powellc/django-photologue-addons/downloads',
 
     include_package_data=True,
 
-    packages=['photologue_extra_tags'],
+    packages=['photologue_addons'],
 
     zip_safe=True,
     classifiers=[
