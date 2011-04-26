@@ -5,7 +5,7 @@ setup(
     version=__import__('photologue_extra_tags').__version__,
     license="BSD",
 
-    install_requires = ['django-photologue',]
+    install_requires = ['django-photologue',],
 
     description='An extension to the base photologue template tag set.'
     long_description=open('README.rst').read(),
