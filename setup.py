@@ -7,7 +7,7 @@ setup(
 
     install_requires = ['django-photologue',],
 
-    description='An extension to the base photologue template tag set.'
+    description='An extension to the base photologue template tag set.',
     long_description=open('README.rst').read(),
 
     author='Colin Powell',
