@@ -32,7 +32,7 @@ def get_public_photos(parser, token):
     argc = len(args)
 
     try:
-        assert argc in (4,6,7,9)
+        assert argc in (4,6,7,8,9)
     except AssertionError:
         raise template.TemplateSyntaxError('Invalid get_public_photos syntax.')
     # determine what parameters to use
@@ -40,6 +40,7 @@ def get_public_photos(parser, token):
     if argc == 4: t, count, a, var_name = args
     if argc == 6: t, count, n, ex_tags, a, var_name = args
     elif argc == 7: t, count, g, switch, tags, a, var_name = args
+    elif argc == 8: t, count, g, tags, n, ex_tags, a, var_name = args
     elif argc == 9: t, count, a, g, tags, n, ex_tags, a, var_name = args
     return GetPhotosNode(count=count, switch=switch, tags=tags, ex_tags=ex_tags, var_name=var_name)
 
@@ -78,11 +79,32 @@ class GetPhotosNode(template.Node):
         context[self.var_name] = photos
         return ''
 
-@register.inclusion_tag('photologue/tags/next_in_gallery.html')
-def next_in_gallery(photo, gallery):
-    return {'photo': photo.get_next_in_gallery(gallery)}
+class GetGalleryNode(template.Node):
+    '''
+        Lookup the gallery via a slug and add it to the page context.
+        Return the context.
+    '''
+    def __init__(self, slug, context_var):
+        self.obj=Gallery.objects.get(title_slug=slug)
+        self.context_var= context_var
+        
+    def render(self, context):
+        context[self.context_var] = self.obj
+        return ''
 
-@register.inclusion_tag('photologue/tags/prev_in_gallery.html')
-def previous_in_gallery(photo, gallery):
-    return {'photo': photo.get_previous_in_gallery(gallery)}
+def do_get_gallery(parser, token):
+    '''
+        Retrieves a gallery by slug
+        {% get_gallery <title_slug> as <template var> %}
+    '''
+    try:
+        bits = token.split_contents()
+    except ValueError:
+        raise template.TemplateSyntaxError(_('tag requires exactly two arguments'))
+    if len(bits) != 4:
+        raise template.TemplateSyntaxError(_('tag requires exactly three arguments'))
+    if bits[2] != 'as':
+        raise template.TemplateSyntaxError(_("second argument to tag must be 'as'"))
+    return GetGalleryNode(bits[1], bits[3])
 
+register.tag('get_gallery', do_get_gallery)
