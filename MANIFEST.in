@@ -1,2 +1,2 @@
 include README.rst
-recursive-include photologue_tags/templatetags/ *
+recursive-include photologue_addons/templatetags/ *
